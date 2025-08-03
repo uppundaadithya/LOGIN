@@ -175,11 +175,11 @@
       Show password
     </div>
     <button type="submit">Login</button>
-    <a href="signupform">Don't have an account? Sign Up</a>
+    <a href="#">Don't have an account? Sign Up</a>
   </form>
 
   <!-- Signup Form -->
-  <form id="#signupForm" class="form-container">
+  <form id="signupForm" class="form-container">
     <h2>Sign Up</h2>
 
     <span>
@@ -213,7 +213,7 @@
     </div>
 
     <button type="submit">Register</button>
-    <a href="#loginForm">Already have an account? Login</a>
+    <a href="#">Already have an account? Login</a>
   </form>
 
   <script>
@@ -263,7 +263,7 @@
           window.location.href = "https://uppundaadithya.github.io/PROGRAM-REGISTER-MAIN/"; // Change as needed
         })
         .catch(err => {
-          alert("Login failed ");
+          alert("Login failed: " + err.message);
         });
     });
 
@@ -296,7 +296,7 @@
         })
         .catch(err => {
           console.error(err);
-          alert("Signup failed ");
+          alert("Signup failed: " + err.message);
         });
     });
   </script>
