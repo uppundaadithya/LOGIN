@@ -3,42 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Login & Signup</title>
+
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(to bottom, rgb(244, 248, 242), rgb(255, 244, 223));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    .inputarea1 {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .inputarea1 h1 {
+      font-size: 1.8rem;
+      margin: 5px 0;
+    }
+
+    img {
+      border-radius: 50px;
+      height: 80px;
+      width: 80px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .tab {
+      cursor: pointer;
+      padding: 10px 20px;
+      background: #ddd;
+      border-radius: 8px;
+    }
+
+    .tab.active {
+      background: #891c1c;
+      color: white;
+    }
+
+    .form-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(54, 237, 149, 0.129);
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 20px;
+      gap: 15px;
+    }
+
+    .form-container.active {
+      display: flex;
+    }
+
+    h2 {
+      color: #630101;
+      padding: 8px;
+      background-color: rgba(255, 242, 226, 0.336);
+      border-radius: 23px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid #e00b0b4f;
+    }
+
+    span {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      font-weight: 500;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="tel"] {
+      padding: 10px;
+      border-radius: 20px;
+      border: none;
+      margin-top: 5px;
+      width: 100%;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    button {
+      border: none;
+      background: rgb(139, 6, 6);
+      color: white;
+      padding: 10px 0;
+      border-radius: 22px;
+      cursor: pointer;
+      font-size: 14px;
+      width: 80%;
+    }
+
+    button:hover {
+      border-radius: 25px;
+      width: 100%;
+    }
+
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    a {
+      color: #620000;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .inputarea1 h1 {
+        font-size: 1.3rem;
+      }
+
+      input {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
+
   <div class="inputarea1">
-    <img src="download.jpg" alt="" />
+    <img src="download.jpg" alt="College Logo" />
     <h1>DR.B.B. HEGDE FIRST GRADE COLLEGE</h1>
-    <h1 id="kunda">kundapura</h1>
+    <h1>Kundapura</h1>
   </div>
 
-  <form id="loginForm" class="inputarea">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('loginForm')">Log in</div>
+    <div class="tab" onclick="showTab('signupForm')">Sign up</div>
+  </div>
+ 
+  <!-- Login Form -->
+  <form id="loginForm" class="form-container active">
     <h2>Login</h2>
     <span>
       Email:
-      <input type="email" id="email" placeholder="Email" required />
+      <input type="email" id="loginEmail" placeholder="Email" required />
     </span>
     <span>
       Password:
-      <input
-        maxlength="8"
-        type="password"
-        id="password"
-        placeholder="Password"
-        required
-      />
+      <input type="password" id="loginPassword" placeholder="Password" minlength="6" required />
     </span>
+    <div class="toggle-wrap">
+      <input type="checkbox" id="toggleLoginPassword" />
+      Show password
+    </div>
     <button type="submit">Login</button>
-    <br >
-    <a href="signup.html">Don't have an account? Sign Up</a>
+    <a href="signupform">Don't have an account? Sign Up</a>
   </form>
-<br><br><br>
+
+  <!-- Signup Form -->
+  <form id="#signupForm" class="form-container">
+    <h2>Sign Up</h2>
+
+    <span>
+      Full Name:
+      <input type="text" id="signupName" placeholder="Your full name" required />
+    </span>
+
+    <span>
+      Phone Number:
+      <input type="tel" id="signupPhone" placeholder="10-digit phone number" pattern="[0-9]{10}" required />
+    </span>
+
+    <span>
+      Register Number:
+      <input type="text" id="signupRegNumber" placeholder="Register number" required />
+    </span>
+
+    <span>
+      Email:
+      <input type="email" id="signupEmail" placeholder="Email" required />
+    </span>
+
+    <span>
+      Password:
+      <input type="password" id="signupPassword" placeholder="Password" maxlength="8" required />
+    </span>
+
+    <div class="toggle-wrap">
+      <input type="checkbox" id="toggleSignupPassword" />
+      Show password
+    </div>
+
+    <button type="submit">Register</button>
+    <a href="#loginForm">Already have an account? Login</a>
+  </form>
+
   <script>
-    // Your Firebase config object
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBK-FCsvl2TgfuqLNg9RV80Fodnc0wXeps",
       authDomain: "program-38391.firebaseapp.com",
@@ -46,29 +225,78 @@
       storageBucket: "program-38391.appspot.com",
       messagingSenderId: "631653067819",
       appId: "1:631653067819:web:9660a94a555d8ac17c4e6e",
-      measurementId: "G-H7WJ5NL8SN",
+      measurementId: "G-H7WJ5NL8SN"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    // Login form submit handler
-    const loginForm = document.getElementById("loginForm");
-    loginForm.addEventListener("submit", (e) => {
+    // Toggle between login/signup forms
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`.tab[onclick*="${tabId}"]`).classList.add('active');
+    }
+
+    // Toggle password visibility
+    document.getElementById("toggleLoginPassword").addEventListener("change", function () {
+      const pw = document.getElementById("loginPassword");
+      pw.type = this.checked ? "text" : "password";
+    });
+
+    document.getElementById("toggleSignupPassword").addEventListener("change", function () {
+      const pw = document.getElementById("signupPassword");
+      pw.type = this.checked ? "text" : "password";
+    });
+
+    // Login handler
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      const email = loginForm.email.value;
-      const password = loginForm.password.value;
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
-      auth
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          alert("Logged in successfully!");
-          // Redirect or do something after login
-          window.location.href = "https://uppundaadithya.github.io/PROGRAM-REGISTER-MAIN/"; // example redirect
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Login successful!");
+          window.location.href = "https://uppundaadithya.github.io/PROGRAM-REGISTER-MAIN/"; // Change as needed
         })
-        .catch((error) => {
-          alert("Login error: " + error.message);
+        .catch(err => {
+          alert("Login failed ");
+        });
+    });
+
+    // Signup handler
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("signupName").value;
+      const phone = document.getElementById("signupPhone").value;
+      const regNumber = document.getElementById("signupRegNumber").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          // Save user details to Firestore
+          return db.collection("users").doc(user.uid).set({
+            name: name,
+            phone: phone,
+            regNumber: regNumber,
+            email: email,
+            createdAt: new Date()
+          });
+        })
+        .then(() => {
+          alert("User registered successfully!");
+          showTab("loginForm");
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Signup failed ");
         });
     });
   </script>
